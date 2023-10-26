@@ -1,0 +1,78 @@
+from random import randint, choice
+
+
+# ---------------------------------
+name = input('Podaj imie twojego bohatera: ')
+life = 100
+mana = 100
+
+
+# ---------------------------------
+def zwykly_atak():
+    return randint(3, 10)
+
+
+def fire_ball():
+    global mana
+    if mana < 10:
+        print("-"*40)
+        print("Nie masz wystarczającej ilości many!")
+        return 0
+    mana -= 10
+    return randint(13, 20)
+
+
+def wybierz_atak():
+    print('a/A - Wykonaj Normalny Atak')
+    print('b/B - Fire ball!')
+    co = input().upper()
+    if co == 'A':
+        return zwykly_atak()
+    elif co == 'B':
+        return fire_ball()
+    else:
+        print("Nie wybrano akcji")
+        return 0
+
+
+# ---------------------------------
+def random_oponent():
+    opponents = [
+        ["Mały Goblin", 15, 3, 0],
+        ["Nimfa Wodna", 10, 3, 0]
+    ]
+    return choice(opponents)
+
+
+# ---------------------------------
+liczba_pokonanych_przeciwników = 0
+
+
+while life > 0:
+    opponent = random_oponent()
+    print("-"*40)
+
+
+    while opponent[1] > 0 and life > 0:
+        print(f"{name} walczy teraz z {opponent[0]}")
+        print(f"Przeciwnik ma {opponent[1]} HP i zadaje Ci {opponent[2]} obrażeń")
+       
+        life -= opponent[2]
+        if life <= 0:
+            break
+
+
+        print(f"Masz {life} HP i {mana} many")
+        atak = wybierz_atak()
+        opponent[1] -= atak
+        print(f"Zadałeś {atak} obrażeń")
+
+
+    if opponent[1] <= 0:
+        print('Zabiłeś przeciwnika!!!')
+        liczba_pokonanych_przeciwników += 1
+
+
+print("-"*40)
+print("KONIEC GRY!")
+print(f"Zabiłeś {liczba_pokonanych_przeciwników} przeciwników")
